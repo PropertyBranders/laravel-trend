@@ -26,6 +26,8 @@ class Trend
     public function __construct(public Builder $builder)
     {
     }
+    public ?string $labelFormat = null;
+
 
     public static function query(Builder $builder): self
     {
@@ -41,6 +43,13 @@ class Trend
     {
         $this->start = $start;
         $this->end = $end;
+
+        return $this;
+    }
+
+    public function labelFormat(string $labelFormat): self
+    {
+        $this->labelFormat = $labelFormat;
 
         return $this;
     }
@@ -182,6 +191,10 @@ class Trend
 
     protected function getCarbonDateFormat(): string
     {
+        if (! is_null($this->labelFormat)) {
+            return $this->labelFormat;
+        }
+
         return match ($this->interval) {
             'minute' => 'Y-m-d H:i:00',
             'hour' => 'Y-m-d H:00',
